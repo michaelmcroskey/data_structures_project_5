@@ -113,6 +113,7 @@
 		    return function () { fetch_paths_to(x, y) };
 		})(i, c);
 		if (INVERTED[[i, c]]) {
+		    img.style.filter="invert(100%)";
 		    img.style.WebkitFilter="invert(100%)";
 		}
 		item.appendChild(img);
