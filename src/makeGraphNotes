@@ -1,0 +1,24 @@
+
+array[M][N] holds each data poitn
+
+map<int, int> G[N*M];
+
+int curr;
+for(int i=0; i<N; ++i) {
+    for (int j=0 j<M; ++j) {
+	curr = f(i,j,M);
+	if(i!=0) G[curr][f(i-1,j,M)] = A[i-1][j];
+	if(j!=0) G[curr][f(i, j-1, M)] = A[i][j-1];
+	if(i!=N) G[curr][f(i+1, j, M)] = A[i+1][j];
+	if(j!=M) G[curr][f(i, j+1, M)] = A[i][j+1];
+    }
+ }
+
+int f(int i, int j, int M) {
+    return i * M + j;
+}
+
+void printIndex(int Linear, int M) {
+    cout << Linear / M;
+    cout << (Linear % M) - 1;
+}
