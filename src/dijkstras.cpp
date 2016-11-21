@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <stack>
 
 using namespace std;
 
@@ -31,7 +32,7 @@ int f(int i, int j, int M) {
 
 // returns index of , based on linear index
 pair<int,int> index(int Linear, int M) {
-    return {(Linear / M), (Linear % M) - 1};
+    return {(Linear / M), (Linear % M) };
 }
 
 
@@ -79,12 +80,12 @@ int main(int argc, char *argv[]) {
         }
     }
     
-    for (int i=0; i<M; i++){
+    /* for (int i=0; i<M; i++){
         for (int j=0; j<N; j++){
             cout << forest[i][j] << " ";
         }
         cout << endl;
-    }
+	}*/
     
     
     int curr;
@@ -117,28 +118,57 @@ int main(int argc, char *argv[]) {
         Edge v = frontier.top();
         frontier.pop();
         
-        auto t = index(v.name, M);
-        if (t.first == r2 && t.second == c2)
-            break;
+        //auto t = index(v.name, M);
+        //if (t.first == r2 && t.second == c2)
+        //    break;
     
         if (marked.find(v.name) != marked.end())
             continue;
-       
+	
+	//cout << "at {" << v.cost << ", " << v.name << ", from " << v.prev << "}" << endl;
+
+
         marked[v.name] = v.prev;
-        total_weight += v.cost;
+
+	//auto t = index(v.name, M);
+        //if (t.first == r2-1 && t.second == c2-1) {
+	if(v.name == f(r2, c2, M)) {
+	    //cout << " have not reached " << r2 << ", " << c2 << endl;
+            break;
+	}
+
+        total_weight = v.cost;
         
         for (auto u : g[to_int(v.name)]){
             frontier.push({u.second + v.cost, u.first, v.name});
-            cout << "pushing {" << u.second + v.cost << ", " << u.first << ", " << v.name << "}" << endl;
+            //cout << "pushing {" << u.second + v.cost << ", " << u.first << ", " << v.name << "}" << endl;
         }
     }
                        
     // OUTPUT RESULT ------------------------------------------
+    //cout << total_weight << endl;
+    
+    //for (auto i : marked)
+    //    cout << i.first << " " << i.second << endl;
+    
+    
+    int q = f(r2, c2, M);
+    stack<int> path;
+    while(q != 0) {
+	//cout << q << endl;
+	path.push(q);
+	q = marked[q];
+    }
+    path.push(f(r1, c1, M));
     cout << total_weight << endl;
-    
-    for (auto i : marked)
-        cout << i.first << " " << i.second << endl;
-    
+    while(!path.empty()) {
+	q = path.top();
+	path.pop();
+	//cout << q << "   ";
+	cout << index(q, M).first << ' ' << index(q, M).second << endl;
+    }
+
+
     return EXIT_SUCCESS;
 }
 
