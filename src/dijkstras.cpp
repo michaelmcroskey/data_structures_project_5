@@ -29,7 +29,8 @@ int f(int i, int j, int M) {
     return i * M + j;
 }
 
-pair<int,int> printIndex(int Linear, int M) {
+// returns index of , based on linear index
+pair<int,int> index(int Linear, int M) {
     return {(Linear / M), (Linear % M) - 1};
 }
 
@@ -78,32 +79,30 @@ int main(int argc, char *argv[]) {
         }
     }
     
-//    for (int i=0; i<M; i++){
-//        for (int j=0; j<N; j++){
-//            cout << forest[i][j];
-//        }
-//        cout << endl;
-//    }
+    for (int i=0; i<M; i++){
+        for (int j=0; j<N; j++){
+            cout << forest[i][j] << " ";
+        }
+        cout << endl;
+    }
     
     
     int curr;
     for(int i=0; i<N; ++i) {
         for (int j=0; j<M; ++j) {
             	curr = f(i,j,M);
-            cout << curr << " ";
-            	if(i!=0) g[curr][f(i-1, j  , M)] = forest[i-1][j];
-            	if(j!=0) g[curr][f(i  , j-1, M)] = forest[i][j-1];
-            	if(i!=N) g[curr][f(i+1, j  , M)] = forest[i+1][j];
-            	if(j!=M) g[curr][f(i  , j+1, M)] = forest[i][j+1];
+            	if(i!=0)   g[curr][f(i-1, j  , M)] = forest[i-1][j];
+            	if(j!=0)   g[curr][f(i  , j-1, M)] = forest[i][j-1];
+            	if(i!=N-1) g[curr][f(i+1, j  , M)] = forest[i+1][j];
+            	if(j!=M-1) g[curr][f(i  , j+1, M)] = forest[i][j+1];
         }
-        cout << endl;
      }
 
-    int RUNNER_START_ROW, RUNNER_START_COL;
-    int RUNNER_END_ROW, RUNNER_END_COL;
+    int r1, c1;
+    int r2, c2;
     
-    cin >> RUNNER_START_ROW >> RUNNER_START_COL;
-    cin >> RUNNER_END_ROW >> RUNNER_END_COL;
+    cin >> r1 >> c1;
+    cin >> r2 >> c2;
     
     int total_weight = 0;
     
@@ -111,43 +110,34 @@ int main(int argc, char *argv[]) {
     map<int, int> marked;
     
     // STARTING NODE -----------------------------------------
-    frontier.push({0, 1, 1});
+    frontier.push({0, f(r1,c1,M), f(r1,c1,M)});
     
-    // PRIM ALGORITHM -----------------------------------------
-//    while (!frontier.empty()){
-//        Edge v = frontier.top();
-//        frontier.pop();
-//    
-//        if (marked.find(v.name) != marked.end())
-//            continue;
-//       
-//        marked[v.name] = v.prev;
-//        total_weight += v.cost;
-//        
-//        for (auto u : g[to_int(v.name)])
-//            frontier.push({u.second + v.cost, u.first, v.name});
-//    }
-//       
-//    marked.erase(marked.find('A'));
-//    
-//    // SORT RESULTS -------------------------------------------
-//    vector<pair<char, char>> results;
-//    for (auto key : marked){
-//        char A = key.first, B = key.second;
-//        if (A<B){
-//            results.push_back({A,B});
-//        } else {
-//            results.push_back({B,A});
-//        }
-//    }
-//        
-//    sort(results.begin(), results.end());
-//    
-//    // OUTPUT RESULT ------------------------------------------
-//    cout << total_weight << endl;
-//    
-//    for (auto i : results)
-//        cout << to_int(i.first) << " " << to_int(i.second) << endl;
+    // DIKJSTRAS ALGORITHM -----------------------------------
+    while (!frontier.empty()){
+        Edge v = frontier.top();
+        frontier.pop();
+        
+        auto t = index(v.name, M);
+        if (t.first == r2 && t.second == c2)
+            break;
+    
+        if (marked.find(v.name) != marked.end())
+            continue;
+       
+        marked[v.name] = v.prev;
+        total_weight += v.cost;
+        
+        for (auto u : g[to_int(v.name)]){
+            frontier.push({u.second + v.cost, u.first, v.name});
+            cout << "pushing {" << u.second + v.cost << ", " << u.first << ", " << v.name << "}" << endl;
+        }
+    }
+                       
+    // OUTPUT RESULT ------------------------------------------
+    cout << total_weight << endl;
+    
+    for (auto i : marked)
+        cout << i.first << " " << i.second << endl;
     
     return EXIT_SUCCESS;
 }
