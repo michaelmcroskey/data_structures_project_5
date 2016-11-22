@@ -78,13 +78,13 @@ int main(int argc, char *argv[]) {
         for (int j=0; j<M; ++j) {
             curr = f(i,j,M);
             // store cost of left node
-            	if(i!=0)   g[curr][f(i-1, j  , M)] = forest[i-1][j];
+            	if(i!=0)   g[curr][f(i-1, j  , M)] = forest[i][j];
             // store cost of bottom node
-            	if(j!=0)   g[curr][f(i  , j-1, M)] = forest[i][j-1];
+            	if(j!=0)   g[curr][f(i  , j-1, M)] = forest[i][j];
             // store cost of right node
-            	if(i!=N-1) g[curr][f(i+1, j  , M)] = forest[i+1][j];
+            	if(i!=N-1) g[curr][f(i+1, j  , M)] = forest[i][j];
             // store cost of top node
-            	if(j!=M-1) g[curr][f(i  , j+1, M)] = forest[i][j+1];
+            	if(j!=M-1) g[curr][f(i  , j+1, M)] = forest[i][j];
         }
     }
     
@@ -94,6 +94,8 @@ int main(int argc, char *argv[]) {
     
     // DIKJSTRAS ALGORITHM ----------------------------------------
     priority_queue<int, std::vector<Edge>, EdgeCost> frontier;
+    //typedef pair<int, int> Pair;
+    //map<Pair, int> marked;
     map<int, int> marked;
     int total_cost = 0;
     
