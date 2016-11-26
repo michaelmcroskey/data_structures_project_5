@@ -10,6 +10,9 @@ dijkstras:	src/dijkstras.cpp
 
 clean:
 	rm -f $(PROGRAMS)
+	
+generate_map: generate_map.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 test:		test-output test-memory test-time
 
