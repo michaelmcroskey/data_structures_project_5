@@ -66,5 +66,8 @@ a factor of less than 100.
 
 Contributions:
 
+Troy Prince: 
+
+Michael McRoskey: began dijkstras.cpp, implemented generate_map.cpp
 
 David Mellitt: Debugging, benchmarks, README
