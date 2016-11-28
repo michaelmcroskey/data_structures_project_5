@@ -66,7 +66,7 @@ a factor of less than 100.
 
 Contributions:
 
-Troy Prince: 
+Troy Prince: implemented dijkstras.cpp, debugging
 
 Michael McRoskey: began dijkstras.cpp, implemented generate_map.cpp
 
