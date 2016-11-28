@@ -1,17 +1,17 @@
 // generate_map.cpp
 
 #include <iostream>
-#include <string>
-#include <strings.h>
 #include <unistd.h>
-#include <set>
 #include <algorithm>
+#include <time.h>
+
+using namespace std;
 
 // Utility functions -----------------------------------------------------------
 
 void usage(int status) {
-	std::cout << "usage: generate_map" << std::endl
-		<< "    -n N    Generates a NxN map of random tiles" << std::endl;
+	cout << "usage: generate_map" << endl
+		<< "    -n N    Generates a NxN map of random tiles" << endl;
 	exit(status);
 }
 
@@ -22,7 +22,7 @@ void parse_command_line_options(int argc, char *argv[], int &N) {
 	while ((c = getopt(argc, argv, "hn:")) != -1) {
 		switch (c) {
 			case 'n':
-				N = std::stoi(optarg);
+				N = stoi(optarg);
 				break;
 			case 'h':
 				usage(0);
@@ -34,12 +34,10 @@ void parse_command_line_options(int argc, char *argv[], int &N) {
 	}
 }
 
-std::set<char> tiles = {'f','g','G','h','m','r'};
+char tiles[6] = {'f','g','G','h','m','r'};
 
 char random_tiles(){
-	std::set<char>::iterator randIt = tiles.begin();
-	std::advance(randIt, std::rand() % tiles.size());
-	return *randIt;
+	return tiles[rand()%6];
 }
 
 // Main execution --------------------------------------------------------------
@@ -48,12 +46,18 @@ int main(int argc, char *argv[]) {
 	int  N = 1;
 	parse_command_line_options(argc, argv, N);
 
+    cout << "6\nf3\ng1\nG2\nh4\nm7\nr5\n" << N << ' ' << N << endl;
+
+    srand(time(NULL));
 	for (int i=0; i<N; i++){
 		for (int j=0; j<N; j++){
-			std::cout << random_tiles();
+			cout << random_tiles();
 		}
-		std::cout << std::endl;
+		cout << endl;
 	}
+
+    cout << rand()%N << ' ' << rand()%N << endl;
+    cout << rand()%N << ' ' << rand()%N << endl;
 	
 	return 0;
 }
