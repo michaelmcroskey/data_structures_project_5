@@ -1,7 +1,7 @@
 CXX=		g++
 CXXFLAGS=	-g -Wall -std=gnu++11
 SHELL=		bash
-PROGRAMS=	src/dijkstras src/measure
+PROGRAMS=	src/dijkstras src/measure generate_map
 
 all:		src/dijkstras src/measure
 
